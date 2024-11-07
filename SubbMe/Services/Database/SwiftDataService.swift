@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @MainActor
-struct SwiftDataService: DatabaseService {
+class SwiftDataService: DatabaseService {
     let container: ModelContainer
 
     private var context: ModelContext {
@@ -19,6 +19,10 @@ struct SwiftDataService: DatabaseService {
     init() {
         let config = ModelConfiguration()
         container = try! ModelContainer(for: Subscription.self, configurations: config)
+    }
+
+    init(container: ModelContainer) {
+        self.container = container
     }
 
     func fetchSubscriptions() -> [Subscription] {

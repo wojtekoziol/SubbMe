@@ -9,12 +9,14 @@ import Foundation
 import SwiftData
 
 extension SwiftDataService {
-    init(preview: Bool) {
+    convenience init(preview: Bool) {
         let config = ModelConfiguration(isStoredInMemoryOnly: preview)
-        container = try! ModelContainer(for: Subscription.self, configurations: config)
+        let container = try! ModelContainer(for: Subscription.self, configurations: config)
+
+        self.init(container: container)
 
         if preview {
-            container.mainContext.insert(Subscription.example)
+            self.container.mainContext.insert(Subscription.example)
         }
     }
 }

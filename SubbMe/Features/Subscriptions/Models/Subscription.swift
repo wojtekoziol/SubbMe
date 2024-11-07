@@ -30,6 +30,14 @@ class Subscription: Identifiable {
         self.websiteURL = websiteURL
     }
 
+    var isActive: Bool {
+        if let dateEndingAsInterval {
+            let dateEnding = Date(timeIntervalSince1970: dateEndingAsInterval)
+            return dateEnding > Date()
+        }
+        return true
+    }
+
     static var example: Subscription {
         Subscription(name: "Spotify", type: .monthly, price: 20, currencyCode: "USD", dateStartedAsInterval: Date().timeIntervalSince1970)
     }

@@ -10,9 +10,13 @@ import SwiftUI
 
 @main
 struct SubbMeApp: App {
+    let databaseService = SwiftDataService()
+
     var body: some Scene {
         WindowGroup {
-            NavigationView()
+            SubscriptionsView(databaseService: databaseService)
+                .preferredColorScheme(.dark)
         }
+        .environment(\.databaseService, databaseService)
     }
 }

@@ -8,16 +8,20 @@
 import Foundation
 
 @Observable
-class SubscriptionsListViewModel {
+class SubscriptionsViewModel {
     private let databaseService: DatabaseService
 
     private(set) var subscriptions = [Subscription]()
+
+    var viewType: ViewType = .calendar
 
     init(databaseService: DatabaseService) {
         self.databaseService = databaseService
 
         fetchSubscriptions()
     }
+
+    // MARK: - Data
 
     func fetchSubscriptions() {
         Task {
@@ -31,4 +35,6 @@ class SubscriptionsListViewModel {
             fetchSubscriptions()
         }
     }
+
+    // MARK: - View
 }

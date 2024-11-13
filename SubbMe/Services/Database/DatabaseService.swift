@@ -10,8 +10,9 @@ import SwiftUI
 
 @MainActor
 protocol DatabaseService {
-    func fetchSubscriptions() -> [Subscription]
+    func fetchSubscriptions(sort: [SortDescriptor<Subscription>]) -> [Subscription]
     func addSubscription(_ subscription: Subscription)
+    func deleteSubscription(_ subscription: Subscription)
 }
 
 // MARK: - Environment

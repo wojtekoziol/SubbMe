@@ -12,8 +12,9 @@ class SubscriptionsViewModel {
     private let databaseService: DatabaseService
 
     private(set) var subscriptions = [Subscription]()
-
     var viewType: ViewType = .calendar
+    var showingEditSheet = false
+    private(set) var selectedSubscription: Subscription?
 
     init(databaseService: DatabaseService) {
         self.databaseService = databaseService
@@ -21,20 +22,14 @@ class SubscriptionsViewModel {
         fetchSubscriptions()
     }
 
-    // MARK: - Data
-
     func fetchSubscriptions() {
         Task {
-            subscriptions = await databaseService.fetchSubscriptions()
+            subscriptions = await databaseService.fetchSubscriptions(sort: [SortDescriptor<Subscription>(\.dateStartedAsInterval)])
         }
     }
 
-    func addSubscription() {
-        Task {
-            await databaseService.addSubscription(Subscription.example)
-            fetchSubscriptions()
-        }
+    func showEditScreen(for subscription: Subscription? = nil) {
+        selectedSubscription = subscription
+        showingEditSheet = true
     }
-
-    // MARK: - View
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SubscriptionsCalendarView: View {
+struct CalendarView: View {
     var body: some View {
         VStack {
             Text("Calendar View")
@@ -17,5 +17,5 @@ struct SubscriptionsCalendarView: View {
 }
 
 #Preview {
-    SubscriptionsCalendarView()
+    CalendarView()
 }

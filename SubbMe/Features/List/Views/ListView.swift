@@ -8,20 +8,24 @@
 import SwiftUI
 import SwiftData
 
-struct SubscriptionsListView: View {
+struct ListView: View {
     @Environment(SubscriptionsViewModel.self) private var vm
 
     var body: some View {
         List {
             ForEach(vm.subscriptions) { subscription in
                 SubscriptionRow(subscription: subscription)
+                    .contentShape(.rect)
+                    .onTapGesture {
+                        vm.showEditScreen(for: subscription)
+                    }
             }
         }
     }
 }
 
 #Preview {
-    SubscriptionsListView()
-        .environment(SubscriptionsViewModel(databaseService: SwiftDataService(preview: true)))
+    ListView()
+        .environment(SubscriptionsViewModel(databaseService: SwiftDataService(container: ModelContainer.preview)))
 }
 

@@ -2,7 +2,7 @@
 //  ViewType.swift
 //  SubbMe
 //
-//  Created by Wojciech Kozioł on 07/11/2024.
+//  Created by Wojciech Kozioł on 11/11/2024.
 //
 
 import Foundation

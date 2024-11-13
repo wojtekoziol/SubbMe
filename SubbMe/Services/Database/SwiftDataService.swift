@@ -25,14 +25,19 @@ class SwiftDataService: DatabaseService {
         self.container = container
     }
 
-    func fetchSubscriptions() -> [Subscription] {
-        let descriptor = FetchDescriptor<Subscription>()
+    func fetchSubscriptions(sort: [SortDescriptor<Subscription>]) -> [Subscription] {
+        var descriptor = FetchDescriptor<Subscription>()
+        descriptor.sortBy = sort
         let fetchedSubscriptions = try? context.fetch(descriptor)
         return fetchedSubscriptions ?? []
     }
 
     func addSubscription(_ subscription: Subscription) {
         context.insert(subscription)
+    }
+
+    func deleteSubscription(_ subscription: Subscription) {
+        context.delete(subscription)
     }
 }
 

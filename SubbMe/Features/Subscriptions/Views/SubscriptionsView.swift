@@ -9,6 +9,8 @@ import SwiftData
 import SwiftUI
 
 struct SubscriptionsView: View {
+    @Environment(\.databaseService) private var databaseService
+
     @State private var vm: SubscriptionsViewModel
 
     init(databaseService: any DatabaseService) {
@@ -26,7 +28,7 @@ struct SubscriptionsView: View {
                     Spacer()
 
                     IconButton(systemImage: "plus") {
-
+                        vm.showEditScreen()
                     }
                 }
                 .padding()
@@ -35,16 +37,20 @@ struct SubscriptionsView: View {
 
                 switch vm.viewType {
                 case .list:
-                    SubscriptionsListView()
+                    ListView()
                 case .calendar:
-                    SubscriptionsCalendarView()
+                    CalendarView()
                 }
             }
+        }
+        .sheet(isPresented: $vm.showingEditSheet) {
+            EditSubscriptionView(databaseService: databaseService, subscription: vm.selectedSubscription)
+                .presentationDragIndicator(.visible)
         }
         .environment(vm)
     }
 }
 
 #Preview {
-    SubscriptionsView(databaseService: SwiftDataService(preview: true))
+    SubscriptionsView(databaseService: SwiftDataService(container: ModelContainer.preview))
 }

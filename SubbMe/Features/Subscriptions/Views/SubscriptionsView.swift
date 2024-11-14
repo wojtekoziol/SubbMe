@@ -51,7 +51,6 @@ struct SubscriptionsView: View {
                 }
             }
         }
-        .animation(.default, value: vm.showingDetailsScreen)
         .sheet(isPresented: $vm.showingEditSheet) {
             EditSubscriptionView(databaseService: databaseService, subscription: vm.selectedSubscription)
                 .presentationDragIndicator(.visible)

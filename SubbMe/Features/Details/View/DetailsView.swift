@@ -26,59 +26,61 @@ struct DetailsView: View {
 
         VStack {
             ZStack(alignment: .topTrailing) {
-                ScrollView {
-                    LazyVStack(spacing: 40) {
-                        Circle()
-                            .frame(width: 80)
+                VStack(spacing: 40) {
+                    Circle()
+                        .frame(width: 80)
 
-                        VStack {
-                            HStack {
-                                Text(subscription.name)
-                                    .font(.title)
-                                    .bold()
+                    VStack {
+                        HStack {
+                            Text(subscription.name)
+                                .font(.title)
+                                .bold()
+                                .multilineTextAlignment(.center)
+                                .lineLimit(2)
 
-                                PriceTagView(price: subscription.price, currencyCode: subscription.currencyCode)
-                            }
-
-                            Text("Next bill: ")
-                                .foregroundStyle(.secondary)
-                            + Text(subscription.nextBill.formattedString())
+                            PriceTagView(price: subscription.price, currencyCode: subscription.currencyCode)
                         }
 
-                        VStack {
-                            DetailRow("Period") {
-                                HStack {
-                                    Circle()
-                                        .fill(subscription.isActive ? .green : .red)
-                                        .frame(width: 7.5)
+                        Text("Next bill: ")
+                            .foregroundStyle(.secondary)
+                        + Text(subscription.nextBill.formattedString())
+                    }
 
-                                    Text(String(describing: subscription.type))
+                    VStack {
+                        DetailRow("Period") {
+                            HStack {
+                                Circle()
+                                    .fill(subscription.isActive ? .green : .red)
+                                    .frame(width: 7.5)
+
+                                Text(String(describing: subscription.type))
+                            }
+                        }
+
+                        DetailRow("Date Started") {
+                            Text(subscription.dateStarted.formattedString())
+                        }
+
+                        DetailRow("Date Ending") {
+                            Text(subscription.dateEnding.formattedString())
+                        }
+
+                        DetailRow("Website") {
+                            if let urlString = subscription.websiteURL, let url = URL(string: urlString) {
+                                Link(destination: url) {
+                                    Label(urlString, systemImage: "link")
                                 }
-                            }
-
-                            DetailRow("Date Started") {
-                                Text(subscription.dateStarted.formattedString())
-                            }
-
-                            DetailRow("Date Ending") {
-                                Text(subscription.dateEnding.formattedString())
-                            }
-
-                            DetailRow("Website") {
-                                if let urlString = subscription.websiteURL, let url = URL(string: urlString) {
-                                    Link(destination: url) {
-                                        Label(urlString, systemImage: "link")
-                                    }
-                                } else {
-                                    Text("-")
-                                }
+                            } else {
+                                Text("-")
                             }
                         }
                     }
-                    .padding()
-                    .padding(.top, 50)
-                    .scaleEffect(scale)
+
+                    Spacer()
                 }
+                .padding()
+                .padding(.top, 50)
+                .scaleEffect(scale)
                 .opacity(opacity)
 
                 HStack {
@@ -97,7 +99,15 @@ struct DetailsView: View {
             }
         }
         .fontWeight(.semibold)
+        .frame(maxHeight: .infinity)
         .background(.background.opacity(opacity))
+        .gesture(
+            DragGesture().onEnded { value in
+                if value.translation.height > 0 {
+                    closeAnimation()
+                }
+            }
+        )
         .onAppear {
             openAnimation()
         }

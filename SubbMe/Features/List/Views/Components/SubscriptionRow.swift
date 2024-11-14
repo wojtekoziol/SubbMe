@@ -19,6 +19,7 @@ struct SubscriptionRow: View {
                 Text(subscription.name)
                     .font(.title3)
                     .bold()
+                    .lineLimit(1)
 
                 Text("Next bill: ")
                     .font(.caption)

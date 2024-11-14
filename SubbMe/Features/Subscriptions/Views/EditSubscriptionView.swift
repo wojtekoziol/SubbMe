@@ -23,33 +23,28 @@ struct EditSubscriptionView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                LazyVStack(spacing: 20) {
-                    TextField("Name", text: $vm.name)
+            Form {
+                TextField("Name", text: $vm.name)
 
-                    HStack {
-                        Text("Subscription Type")
+                Picker("Subscription Type", selection: $vm.type) {
+                    ForEach(SubscriptionType.allCases, id: \.self) {
+                        Text(String(describing: $0))
+                    }
+                }
 
-                        Spacer()
+                HStack {
+                    TextField("Price", text: $vm.price)
+                        .keyboardType(.numberPad)
 
-                        Picker("Subscription Type", selection: $vm.type) {
-                            ForEach(SubscriptionType.allCases, id: \.self) {
-                                Text(String(describing: $0))
-                            }
+                    Picker("Currency", selection: $vm.currencyCode) {
+                        ForEach(Constants.availableCurrencies, id: \.self) {
+                            Text($0)
                         }
                     }
+                    .labelsHidden()
+                }
 
-                    HStack {
-                        TextField("Price", text: $vm.price)
-                            .keyboardType(.numberPad)
-
-                        Picker("Currency", selection: $vm.currencyCode) {
-                            ForEach(Constants.availableCurrencies, id: \.self) {
-                                Text($0)
-                            }
-                        }
-                    }
-
+                Section {
                     DatePicker("Date Started", selection: $vm.dateStarted, displayedComponents: [.date])
 
                     Toggle(isOn: $vm.dateEndingEnabled) {
@@ -59,29 +54,28 @@ struct EditSubscriptionView: View {
                     if vm.dateEndingEnabled {
                         DatePicker("Date Ending", selection: $vm.dateEnding, displayedComponents: [.date])
                     }
+                }
 
-                    TextField("Website URL", text: $vm.websiteURL)
-                        .keyboardType(.URL)
-                        .autocorrectionDisabled()
-                        .textInputAutocapitalization(.never)
+                TextField("Website URL", text: $vm.websiteURL)
+                    .keyboardType(.URL)
+                    .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
 
-                    Button("Save") {
-                        vm.save()
-                        subscriptionsViewModel.fetchSubscriptions()
-                        dismiss()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(!vm.isFormValid)
+                Button("Save") {
+                    vm.save()
+                    subscriptionsViewModel.fetchSubscriptions()
+                    dismiss()
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(!vm.isFormValid)
 
-                    if !vm.isNew {
-                        Button("Delete", role: .destructive) {
-                            vm.showDeleteAlert()
-                        }
+                if !vm.isNew {
+                    Button("Delete", role: .destructive) {
+                        vm.showDeleteAlert()
                     }
                 }
-                .padding()
-                .animation(.default, value: vm.dateEndingEnabled)
             }
+            .animation(.default, value: vm.dateEndingEnabled)
             .navigationTitle(title.localizedCapitalized)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

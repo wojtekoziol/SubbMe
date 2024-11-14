@@ -14,9 +14,15 @@ struct PriceTagView: View {
     var body: some View {
         Text(price.asPrice(currencyCode: currencyCode))
             .font(.caption)
-            .foregroundStyle(.green)
+            .fontWeight(.semibold)
+            .foregroundStyle(.darkGreen)
             .padding(5)
-            .background(.white)
+            .background(
+                RoundedRectangle(cornerRadius: 5)
+                    .stroke(.darkGreen, lineWidth: 5)
+                    .fill(.white)
+                    .fill(.green.opacity(0.15))
+            )
     }
 }
 

@@ -46,7 +46,7 @@ class EditSubscriptionViewModel {
         subscription.type = type
         subscription.price = Double(price) ?? 0
         subscription.currencyCode = currencyCode
-        subscription.dateEndingAsInterval = dateStarted.timeIntervalSince1970
+        subscription.dateStartedAsInterval = dateStarted.timeIntervalSince1970
         subscription.dateEndingAsInterval = dateEndingEnabled ? dateEnding.timeIntervalSince1970 : nil
         subscription.websiteURL = websiteURL
 

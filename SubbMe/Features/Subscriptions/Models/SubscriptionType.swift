@@ -15,7 +15,7 @@ enum SubscriptionType: CaseIterable, Codable, CustomStringConvertible, Hashable 
         case .annually:
             "Annually"
         case .monthly:
-            "Monlthy"
+            "Monthly"
         case .weekly:
             "Weekly"
         case .daily:

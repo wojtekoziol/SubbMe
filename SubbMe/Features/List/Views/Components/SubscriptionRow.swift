@@ -12,7 +12,6 @@ struct SubscriptionRow: View {
 
     var body: some View {
         HStack(spacing: 20) {
-            // TODO: Insert icon
             RoundedRectangle(cornerRadius: 10)
                 .frame(width: 30, height: 30)
 
@@ -21,9 +20,11 @@ struct SubscriptionRow: View {
                     .font(.title3)
                     .bold()
 
-                Text("Next bill:")
+                Text("Next bill: ")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                + Text(subscription.nextBill.formattedString(style: .medium))
+                    .font(.caption)
             }
 
             Spacer()

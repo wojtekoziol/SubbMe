@@ -34,6 +34,38 @@ class Subscription: Identifiable {
         self.init(name: "", type: .monthly, price: 0, currencyCode: "EUR", dateStartedAsInterval: Date().timeIntervalSince1970)
     }
 
+    var nextBill: Date? {
+        if Date() < dateStarted {
+            return dateStarted
+        }
+
+        let component: Calendar.Component
+        switch type {
+        case .daily:
+            component = .day
+        case .weekly:
+            component = .weekOfYear
+        case .monthly:
+            component = .month
+        case .annually:
+            component = .year
+        }
+
+        var nextDate = dateStarted
+        while nextDate <= Date() {
+            guard let updatedDate = Calendar.current.date(byAdding: component, value: 1, to: nextDate) else {
+                return nil
+            }
+            nextDate = updatedDate
+        }
+
+        if let endDate = dateEnding, nextDate > endDate {
+            return nil
+        }
+
+        return nextDate
+    }
+
     var isActive: Bool {
         if let dateEndingAsInterval {
             let dateEnding = Date(timeIntervalSince1970: dateEndingAsInterval)
@@ -55,6 +87,6 @@ class Subscription: Identifiable {
     }
 
     static var example: Subscription {
-        Subscription(name: "Spotify", type: .monthly, price: 20, currencyCode: "EUR", dateStartedAsInterval: Date().timeIntervalSince1970)
+        Subscription(name: "Spotify", type: .monthly, price: 20, currencyCode: "EUR", dateStartedAsInterval: Date().timeIntervalSince1970, websiteURL: "google.com")
     }
 }

@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9F40ECDD2CE6130600CA596A /* SuperValidator in Frameworks */ = {isa = PBXBuildFile; productRef = 9F40ECDC2CE6130600CA596A /* SuperValidator */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		9FE7226E2CDCF86800EF907C /* SubbMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SubbMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F40ECDD2CE6130600CA596A /* SuperValidator in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = SubbMe;
 			packageProductDependencies = (
+				9F40ECDC2CE6130600CA596A /* SuperValidator */,
 			);
 			productName = SubbMe;
 			productReference = 9FE7226E2CDCF86800EF907C /* SubbMe.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 9FE722652CDCF86800EF907C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9F40ECDB2CE6130600CA596A /* XCRemoteSwiftPackageReference "ios-supervalidator" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9FE7226F2CDCF86800EF907C /* Products */;
 			projectDirPath = "";
@@ -324,6 +333,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9F40ECDB2CE6130600CA596A /* XCRemoteSwiftPackageReference "ios-supervalidator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tokopedia/ios-supervalidator";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9F40ECDC2CE6130600CA596A /* SuperValidator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9F40ECDB2CE6130600CA596A /* XCRemoteSwiftPackageReference "ios-supervalidator" */;
+			productName = SuperValidator;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9FE722662CDCF86800EF907C /* Project object */;
 }

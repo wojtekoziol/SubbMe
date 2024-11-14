@@ -62,6 +62,8 @@ struct EditSubscriptionView: View {
 
                     TextField("Website URL", text: $vm.websiteURL)
                         .keyboardType(.URL)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
 
                     Button("Save") {
                         vm.save()
@@ -69,6 +71,7 @@ struct EditSubscriptionView: View {
                         dismiss()
                     }
                     .buttonStyle(.borderedProminent)
+                    .disabled(!vm.isFormValid)
 
                     if !vm.isNew {
                         Button("Delete", role: .destructive) {

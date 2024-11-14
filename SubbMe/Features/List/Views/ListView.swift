@@ -17,7 +17,7 @@ struct ListView: View {
                 SubscriptionRow(subscription: subscription)
                     .contentShape(.rect)
                     .onTapGesture {
-                        vm.showEditScreen(for: subscription)
+                        vm.showDetails(for: subscription)
                     }
             }
         }

@@ -1,0 +1,15 @@
+{
+  "originHash" : "7fe2a41b54203ac10fc16d5e0061078f8948ee9d5453cdcbfdb802e0fe4e01ce",
+  "pins" : [
+    {
+      "identity" : "ios-supervalidator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tokopedia/ios-supervalidator",
+      "state" : {
+        "revision" : "f145a17f229048dd2a8e94c851faa02dab5b1322",
+        "version" : "0.1.1"
+      }
+    }
+  ],
+  "version" : 3
+}

@@ -14,6 +14,7 @@ class SubscriptionsViewModel {
     private(set) var subscriptions = [Subscription]()
     var viewType: ViewType = .calendar
     var showingEditSheet = false
+    private(set) var showingDetailsScreen = false
     private(set) var selectedSubscription: Subscription?
 
     init(databaseService: DatabaseService) {
@@ -31,5 +32,14 @@ class SubscriptionsViewModel {
     func showEditScreen(for subscription: Subscription? = nil) {
         selectedSubscription = subscription
         showingEditSheet = true
+    }
+
+    func showDetails(for subscription: Subscription) {
+        selectedSubscription = subscription
+        showingDetailsScreen = true
+    }
+
+    func hideDetails() {
+        showingDetailsScreen = false
     }
 }

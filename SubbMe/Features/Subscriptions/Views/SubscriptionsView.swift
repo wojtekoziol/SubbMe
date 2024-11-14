@@ -9,6 +9,7 @@ import SwiftData
 import SwiftUI
 
 struct SubscriptionsView: View {
+    @Namespace private var animation
     @Environment(\.databaseService) private var databaseService
 
     @State private var vm: SubscriptionsViewModel
@@ -19,30 +20,38 @@ struct SubscriptionsView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                HStack(spacing: 10) {
-                    ViewSelector(name: "Calendar", viewType: .calendar, currentViewType: $vm.viewType)
-                    
-                    ViewSelector(name: "List", viewType: .list, currentViewType: $vm.viewType)
+            ZStack {
+                VStack(spacing: 0) {
+                    HStack(spacing: 10) {
+                        ViewSelector(name: "Calendar", viewType: .calendar, currentViewType: $vm.viewType)
 
-                    Spacer()
+                        ViewSelector(name: "List", viewType: .list, currentViewType: $vm.viewType)
 
-                    IconButton(systemImage: "plus") {
-                        vm.showEditScreen()
+                        Spacer()
+
+                        IconButton(systemImage: "plus") {
+                            vm.showEditScreen()
+                        }
+                        .matchedGeometryEffect(id: "icon-button", in: animation)
+                    }
+                    .padding()
+
+                    Divider()
+
+                    switch vm.viewType {
+                    case .list:
+                        ListView()
+                    case .calendar:
+                        CalendarView()
                     }
                 }
-                .padding()
 
-                Divider()
-
-                switch vm.viewType {
-                case .list:
-                    ListView()
-                case .calendar:
-                    CalendarView()
+                if let selectedSubscription = vm.selectedSubscription, vm.showingDetailsScreen {
+                    DetailsView(subscription: selectedSubscription, animation: animation)
                 }
             }
         }
+        .animation(.default, value: vm.showingDetailsScreen)
         .sheet(isPresented: $vm.showingEditSheet) {
             EditSubscriptionView(databaseService: databaseService, subscription: vm.selectedSubscription)
                 .presentationDragIndicator(.visible)

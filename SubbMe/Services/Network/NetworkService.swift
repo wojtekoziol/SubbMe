@@ -31,7 +31,7 @@ struct NetworkService {
         return data
     }
 
-    func post(token: String?, endpoint: String, body: Data) async throws -> Data {
+    func post(token: String?, endpoint: String, body: Data?) async throws -> Data {
         let urlString = apiBaseUrl + endpoint
         guard let url = URL(string: urlString) else { throw NetworkError.invalidURL }
 
@@ -53,7 +53,7 @@ struct NetworkService {
         return data
     }
 
-    func put(token: String?, endpoint: String, body: Data) async throws -> Data {
+    func put(token: String?, endpoint: String, body: Data?) async throws -> Data {
         let urlString = apiBaseUrl + endpoint
         guard let url = URL(string: urlString) else { throw NetworkError.invalidURL }
 
@@ -65,6 +65,25 @@ struct NetworkService {
         }
 
         request.httpBody = body
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkError.invalidResponse
+        }
+
+        return data
+    }
+
+    func delete(token: String?, endpoint: String) async throws -> Data {
+        let urlString = apiBaseUrl + endpoint
+        guard let url = URL(string: urlString) else { throw NetworkError.invalidURL }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        if let token {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
 
         let (data, response) = try await URLSession.shared.data(for: request)
 

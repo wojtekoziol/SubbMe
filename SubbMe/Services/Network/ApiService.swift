@@ -50,4 +50,9 @@ class ApiService: ApiServiceProtocol {
         let data = try await NetworkService.shared.put(token: token, endpoint: "subscription/\(id)", body: body)
         return try decoder.decode(Subscription.self, from: data)
     }
+
+    func deleteSubscription(_ subscription: Subscription) async throws {
+        guard let id = subscription.id else { throw NetworkError.invalidData }
+        let _ = try await NetworkService.shared.delete(token: token, endpoint: "subscription/\(id)")
+    }
 }

@@ -111,6 +111,9 @@ struct DetailsView: View {
         .onAppear {
             openAnimation()
         }
+        .onChange(of: vm.subscriptions) { oldValue, newValue in
+            if !vm.subscriptions.contains(where: { $0.id == subscription.id }) { closeAnimation() }
+        }
     }
 
     private func openAnimation() {

@@ -101,9 +101,12 @@ class EditSubscriptionViewModel {
     }
 
     func delete() async {
-        guard showingDeleteAlert else { return }
-
-        await databaseService.deleteSubscription(subscription)
+        do {
+            try await apiService.deleteSubscription(subscription)
+            await databaseService.deleteSubscription(subscription)
+        } catch {
+            print("Error deleting subscription: \(error.localizedDescription)")
+        }
     }
 
     var isFormValid: Bool {

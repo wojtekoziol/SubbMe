@@ -13,6 +13,7 @@ protocol ApiServiceProtocol {
     func fetchSubscriptions() async throws -> [Subscription]
     func createSubscription(_ subscription: Subscription) async throws -> Subscription
     func updateSubscription(_ subscription: Subscription) async throws -> Subscription
+    func deleteSubscription(_ subscription: Subscription) async throws
 }
 
 // MARK: - Mock
@@ -23,4 +24,5 @@ class MockApiService: ApiServiceProtocol {
     func fetchSubscriptions() async throws -> [Subscription] { [Subscription.example] }
     func createSubscription(_ subscription: Subscription) async throws -> Subscription { Subscription.example }
     func updateSubscription(_ subscription: Subscription) async throws -> Subscription { Subscription.example }
+    func deleteSubscription(_ subscription: Subscription) async throws { }
 }

@@ -10,89 +10,25 @@ import Foundation
 struct NetworkService {
     static let shared = NetworkService()
 
-    let apiBaseUrl = "http://localhost:8080/"
-
-    func get(token: String?, endpoint: String) async throws -> Data {
-        let urlString = apiBaseUrl + endpoint
-        guard let url = URL(string: urlString) else { throw NetworkError.invalidURL }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        if let token {
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        }
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-            throw NetworkError.invalidResponse
-        }
-
-        return data
-    }
-
-    func post(token: String?, endpoint: String, body: Data?) async throws -> Data {
-        let urlString = apiBaseUrl + endpoint
-        guard let url = URL(string: urlString) else { throw NetworkError.invalidURL }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        if let token {
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        }
-
-        request.httpBody = body
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-            throw NetworkError.invalidResponse
-        }
-
-        return data
-    }
-
-    func put(token: String?, endpoint: String, body: Data?) async throws -> Data {
-        let urlString = apiBaseUrl + endpoint
-        guard let url = URL(string: urlString) else { throw NetworkError.invalidURL }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "PUT"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        if let token {
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        }
-
-        request.httpBody = body
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-            throw NetworkError.invalidResponse
-        }
-
-        return data
-    }
-
-    func delete(token: String?, endpoint: String) async throws -> Data {
-        let urlString = apiBaseUrl + endpoint
-        guard let url = URL(string: urlString) else { throw NetworkError.invalidURL }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "DELETE"
-        if let token {
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        }
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-            throw NetworkError.invalidResponse
-        }
-
-        return data
-    }
-
     private init() { }
+
+    func performRequest(_ request: NetworkRequest) async throws -> Data {
+        guard let url = URL(string: request.urlString) else { throw NetworkError.invalidURL }
+
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = request.method.rawValue
+        for header in request.headers {
+            urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
+        }
+
+        urlRequest.httpBody = request.body
+
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkError.invalidResponse
+        }
+
+        return data
+    }
 }

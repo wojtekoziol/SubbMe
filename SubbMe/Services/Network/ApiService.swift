@@ -17,7 +17,8 @@ class ApiService: ApiServiceProtocol {
 
     func register(with registerDTO: RegisterDTO) async throws -> User {
         let body = try encoder.encode(registerDTO)
-        let data = try await NetworkService.shared.post(token: nil, endpoint: "auth/register", body: body)
+        let request = NetworkRequest(endpoint: "auth/register", method: .post, token: nil, body: body)
+        let data = try await NetworkService.shared.performRequest(request)
         let user = try decoder.decode(User.self, from: data)
         token = user.token
         return user
@@ -25,7 +26,8 @@ class ApiService: ApiServiceProtocol {
 
     func login(with loginDTO: LoginDTO) async throws -> User {
         let body = try encoder.encode(loginDTO)
-        let data = try await NetworkService.shared.post(token: nil, endpoint: "auth/login", body: body)
+        let request = NetworkRequest(endpoint: "auth/login", method: .post, token: nil, body: body)
+        let data = try await NetworkService.shared.performRequest(request)
         let user = try decoder.decode(User.self, from: data)
         token = user.token
         return user
@@ -34,25 +36,29 @@ class ApiService: ApiServiceProtocol {
     // MARK: - Subscriptions
 
     func fetchSubscriptions() async throws -> [Subscription] {
-        let data = try await NetworkService.shared.get(token: token, endpoint: "subscription")
+        let request = NetworkRequest(endpoint: "subscription", method: .get, token: token, body: nil)
+        let data = try await NetworkService.shared.performRequest(request)
         return try decoder.decode([Subscription].self, from: data)
     }
 
     func createSubscription(_ subscription: Subscription) async throws -> Subscription {
         let body = try encoder.encode(subscription)
-        let data = try await NetworkService.shared.post(token: token, endpoint: "subscription", body: body)
+        let request = NetworkRequest(endpoint: "subscription", method: .post, token: token, body: body)
+        let data = try await NetworkService.shared.performRequest(request)
         return try decoder.decode(Subscription.self, from: data)
     }
 
     func updateSubscription(_ subscription: Subscription) async throws -> Subscription {
         guard let id = subscription.id else { throw NetworkError.invalidData }
         let body = try encoder.encode(subscription)
-        let data = try await NetworkService.shared.put(token: token, endpoint: "subscription/\(id)", body: body)
+        let request = NetworkRequest(endpoint: "subscription/\(id)", method: .put, token: token, body: body)
+        let data = try await NetworkService.shared.performRequest(request)
         return try decoder.decode(Subscription.self, from: data)
     }
 
     func deleteSubscription(_ subscription: Subscription) async throws {
         guard let id = subscription.id else { throw NetworkError.invalidData }
-        let _ = try await NetworkService.shared.delete(token: token, endpoint: "subscription/\(id)")
+        let request = NetworkRequest(endpoint: "subscription/\(id)", method: .delete, token: token, body: nil)
+        let _ = try await NetworkService.shared.performRequest(request)
     }
 }

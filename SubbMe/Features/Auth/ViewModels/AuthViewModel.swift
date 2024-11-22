@@ -5,12 +5,15 @@
 //  Created by Wojciech Kozioł on 21/11/2024.
 //
 
+import Factory
 import Foundation
 
 @Observable
 class AuthViewModel {
-    private let databaseService: DatabaseService
-    private let apiService: ApiService
+    @ObservationIgnored
+    @Injected(\.databaseService) private var databaseService
+    @ObservationIgnored
+    @Injected(\.apiService) private var apiService
 
     private(set) var user: User?
 
@@ -19,15 +22,6 @@ class AuthViewModel {
     var firstName = ""
     var lastName = ""
 
-    init(databaseService: DatabaseService, apiService: ApiService) {
-        self.databaseService = databaseService
-        self.apiService = apiService
-    }
-
-    private func getUserFromDatabase() async {
-        user = await databaseService.fetchUser()
-    }
-
     func login() async {
         let loginDTO = LoginDTO(email: email, password: password)
         guard loginDTO.validate() else { return }
@@ -35,7 +29,7 @@ class AuthViewModel {
         do {
             let loggedUser = try await apiService.login(with: loginDTO)
             self.user = loggedUser
-            await databaseService.addUser(loggedUser)
+            await databaseService.updateUser(loggedUser)
         } catch {
             print("Login error: \(error.localizedDescription)")
         }
@@ -48,7 +42,7 @@ class AuthViewModel {
         do {
             let registeredUser = try await apiService.register(with: registerDTO)
             self.user = registeredUser
-            await databaseService.addUser(registeredUser)
+            await databaseService.updateUser(registeredUser)
         } catch {
             print("Register error: \(error.localizedDescription)")
         }

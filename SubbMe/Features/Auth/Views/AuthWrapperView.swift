@@ -5,20 +5,16 @@
 //  Created by Wojciech Kozioł on 21/11/2024.
 //
 
+import Factory
 import SwiftUI
 import SwiftData
 
 struct AuthWrapperView: View {
-    @Environment(\.databaseService) private var databaseService
-    @State private var vm: AuthViewModel
-
-    init(databaseService: DatabaseService, apiService: ApiService) {
-        self._vm = State(wrappedValue: AuthViewModel(databaseService: databaseService, apiService: apiService))
-    }
+    @State private var vm = AuthViewModel()
 
     var body: some View {
-        if let user = vm.user {
-            SubscriptionsView(databaseService: databaseService)
+        if vm.user != nil {
+            SubscriptionsView()
         } else {
             LoginView()
                 .environment(vm)
@@ -27,7 +23,6 @@ struct AuthWrapperView: View {
 }
 
 #Preview {
-    let databaseService = SwiftDataService(container: ModelContainer.preview)
-    return AuthWrapperView(databaseService: databaseService, apiService: ApiService())
-        .environment(\.databaseService, databaseService)
+    Container.shared.preview()
+    return AuthWrapperView()
 }

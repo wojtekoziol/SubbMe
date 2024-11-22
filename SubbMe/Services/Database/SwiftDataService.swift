@@ -21,10 +21,6 @@ class SwiftDataService: DatabaseService {
         container = try! ModelContainer(for: Subscription.self, configurations: config)
     }
 
-    init(container: ModelContainer) {
-        self.container = container
-    }
-
     // MARK: - User
 
     func fetchUser() -> User? {
@@ -32,7 +28,7 @@ class SwiftDataService: DatabaseService {
         return try? context.fetch(descriptor).first
     }
 
-    func addUser(_ user: User) {
+    func updateUser(_ user: User) {
         let existingUser = fetchUser()
         if let existingUser {
             context.delete(existingUser)
@@ -55,6 +51,13 @@ class SwiftDataService: DatabaseService {
 
     func deleteSubscription(_ subscription: Subscription) {
         context.delete(subscription)
+    }
+
+    func updateAllSubscriptions(_ subscriptions: [Subscription]) {
+        try? context.delete(model: Subscription.self)
+        for subscription in subscriptions {
+            context.insert(subscription)
+        }
     }
 }
 

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9F40ECDD2CE6130600CA596A /* SuperValidator in Frameworks */ = {isa = PBXBuildFile; productRef = 9F40ECDC2CE6130600CA596A /* SuperValidator */; };
+		9F998EC32CF0AC0000DFFB7C /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 9F998EC22CF0AC0000DFFB7C /* Factory */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F40ECDD2CE6130600CA596A /* SuperValidator in Frameworks */,
+				9F998EC32CF0AC0000DFFB7C /* Factory in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +73,7 @@
 			name = SubbMe;
 			packageProductDependencies = (
 				9F40ECDC2CE6130600CA596A /* SuperValidator */,
+				9F998EC22CF0AC0000DFFB7C /* Factory */,
 			);
 			productName = SubbMe;
 			productReference = 9FE7226E2CDCF86800EF907C /* SubbMe.app */;
@@ -102,6 +105,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				9F40ECDB2CE6130600CA596A /* XCRemoteSwiftPackageReference "ios-supervalidator" */,
+				9F998EC12CF0AC0000DFFB7C /* XCRemoteSwiftPackageReference "Factory" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9FE7226F2CDCF86800EF907C /* Products */;
@@ -343,6 +347,14 @@
 				minimumVersion = 0.1.1;
 			};
 		};
+		9F998EC12CF0AC0000DFFB7C /* XCRemoteSwiftPackageReference "Factory" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hmlongco/Factory";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -350,6 +362,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9F40ECDB2CE6130600CA596A /* XCRemoteSwiftPackageReference "ios-supervalidator" */;
 			productName = SuperValidator;
+		};
+		9F998EC22CF0AC0000DFFB7C /* Factory */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9F998EC12CF0AC0000DFFB7C /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = Factory;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

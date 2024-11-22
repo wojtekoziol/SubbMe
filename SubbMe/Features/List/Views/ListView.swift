@@ -5,6 +5,7 @@
 //  Created by Wojciech Kozioł on 07/11/2024.
 //
 
+import Factory
 import SwiftUI
 import SwiftData
 
@@ -25,7 +26,8 @@ struct ListView: View {
 }
 
 #Preview {
-    ListView()
-        .environment(SubscriptionsViewModel(databaseService: SwiftDataService(container: ModelContainer.preview)))
+    Container.shared.preview()
+    return ListView()
+        .environment(SubscriptionsViewModel())
 }
 

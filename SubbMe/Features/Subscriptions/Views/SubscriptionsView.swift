@@ -5,18 +5,14 @@
 //  Created by Wojciech Kozioł on 07/11/2024.
 //
 
+import Factory
 import SwiftData
 import SwiftUI
 
 struct SubscriptionsView: View {
     @Namespace private var animation
-    @Environment(\.databaseService) private var databaseService
 
-    @State private var vm: SubscriptionsViewModel
-
-    init(databaseService: any DatabaseService) {
-        self._vm = State(wrappedValue: SubscriptionsViewModel(databaseService: databaseService))
-    }
+    @State private var vm = SubscriptionsViewModel()
 
     var body: some View {
         NavigationStack {
@@ -52,7 +48,7 @@ struct SubscriptionsView: View {
             }
         }
         .sheet(isPresented: $vm.showingEditSheet) {
-            EditSubscriptionView(databaseService: databaseService, subscription: vm.selectedSubscription)
+            EditSubscriptionView(subscription: vm.selectedSubscription)
                 .presentationDragIndicator(.visible)
         }
         .environment(vm)
@@ -60,5 +56,6 @@ struct SubscriptionsView: View {
 }
 
 #Preview {
-    SubscriptionsView(databaseService: SwiftDataService(container: ModelContainer.preview))
+    Container.shared.preview()
+    return SubscriptionsView()
 }

@@ -10,15 +10,10 @@ import SwiftUI
 
 @main
 struct SubbMeApp: App {
-    let databaseService = SwiftDataService()
-    let apiService = ApiService()
-
     var body: some Scene {
         WindowGroup {
-            AuthWrapperView(databaseService: databaseService, apiService: apiService)
+            AuthWrapperView()
                 .preferredColorScheme(.dark)
         }
-        .environment(\.databaseService, databaseService)
-        .environment(\.apiService, apiService)
     }
 }

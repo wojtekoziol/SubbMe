@@ -10,23 +10,25 @@ import SwiftUI
 @MainActor
 protocol DatabaseService {
     func fetchUser() -> User?
-    func addUser(_ user: User)
+    func updateUser(_ user: User)
     func fetchSubscriptions(sort: [SortDescriptor<Subscription>]) -> [Subscription]
     func addSubscription(_ subscription: Subscription)
     func deleteSubscription(_ subscription: Subscription)
+    func updateAllSubscriptions(_ subscriptions: [Subscription])
 }
 
-// MARK: - Environment
+// MARK: - Mock
 
-struct DatabaseServiceKey: EnvironmentKey {
-    @MainActor
-    static var defaultValue: DatabaseService = SwiftDataService()
-}
+class MockDatabaseService: DatabaseService {
+    func fetchUser() -> User? { User.example }
 
-extension EnvironmentValues {
-    @MainActor
-    var databaseService: DatabaseService {
-        get { self[DatabaseServiceKey.self] }
-        set { self[DatabaseServiceKey.self] = newValue }
-    }
+    func updateUser(_ user: User) { }
+
+    func fetchSubscriptions(sort: [SortDescriptor<Subscription>]) -> [Subscription] { [Subscription.example] }
+
+    func addSubscription(_ subscription: Subscription) { }
+
+    func deleteSubscription(_ subscription: Subscription) { }
+
+    func updateAllSubscriptions(_ subscriptions: [Subscription]) { }
 }

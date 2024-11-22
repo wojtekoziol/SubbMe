@@ -5,6 +5,7 @@
 //  Created by Wojciech Kozioł on 22/11/2024.
 //
 
+import Factory
 import SwiftData
 import SwiftUI
 
@@ -43,6 +44,7 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView()
-        .environment(AuthViewModel(databaseService: SwiftDataService(container: ModelContainer.preview), apiService: ApiService()))
+    Container.shared.preview()
+    return LoginView()
+        .environment(AuthViewModel())
 }

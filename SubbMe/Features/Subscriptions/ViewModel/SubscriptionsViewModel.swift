@@ -5,11 +5,15 @@
 //  Created by Wojciech Kozioł on 07/11/2024.
 //
 
+import Factory
 import Foundation
 
 @Observable
 class SubscriptionsViewModel {
-    private let databaseService: DatabaseService
+    @ObservationIgnored
+    @Injected(\.databaseService) private var databaseService
+    @ObservationIgnored
+    @Injected(\.apiService) private var apiService
 
     private(set) var subscriptions = [Subscription]()
     var viewType: ViewType = .calendar
@@ -17,15 +21,21 @@ class SubscriptionsViewModel {
     private(set) var showingDetailsScreen = false
     private(set) var selectedSubscription: Subscription?
 
-    init(databaseService: DatabaseService) {
-        self.databaseService = databaseService
-
+    init() {
         fetchSubscriptions()
     }
 
     func fetchSubscriptions() {
         Task {
-            subscriptions = await databaseService.fetchSubscriptions(sort: [SortDescriptor<Subscription>(\.dateStartedAsInterval)])
+            do {
+                let subscriptions = try await apiService.fetchSubscriptions()
+                self.subscriptions = subscriptions
+                await databaseService.updateAllSubscriptions(subscriptions)
+            } catch {
+                print("Error fetching subscriptions from api: \(error.localizedDescription)")
+                print("Fetching subscriptions locally")
+                self.subscriptions = await databaseService.fetchSubscriptions(sort: [SortDescriptor<Subscription>(\.dateStartedAsInterval)])
+            }
         }
     }
 

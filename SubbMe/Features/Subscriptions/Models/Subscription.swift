@@ -9,7 +9,18 @@ import Foundation
 import SwiftData
 
 @Model
-class Subscription: Identifiable {
+class Subscription: Identifiable, Decodable {
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case type
+        case price
+        case currencyCode
+        case dateStartedAsInterval
+        case dateEndingAsInterval
+        case websiteURL
+    }
+
     var id: UInt64? = nil
     var name: String
     var type: SubscriptionType
@@ -27,6 +38,18 @@ class Subscription: Identifiable {
         self.dateStartedAsInterval = dateStartedAsInterval
         self.dateEndingAsInterval = dateEndingAsInterval
         self.websiteURL = websiteURL
+    }
+
+    required init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decodeIfPresent(UInt64.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        type = try container.decode(SubscriptionType.self, forKey: .type)
+        price = try container.decode(Double.self, forKey: .price)
+        currencyCode = try container.decode(String.self, forKey: .currencyCode)
+        dateStartedAsInterval = try container.decode(Double.self, forKey: .dateStartedAsInterval)
+        dateEndingAsInterval = try container.decodeIfPresent(Double.self, forKey: .dateEndingAsInterval)
+        websiteURL = try container.decodeIfPresent(String.self, forKey: .websiteURL)
     }
 
     convenience init() {

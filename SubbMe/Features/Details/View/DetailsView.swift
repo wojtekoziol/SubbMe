@@ -5,11 +5,11 @@
 //  Created by Wojciech Kozioł on 13/11/2024.
 //
 
+import Factory
 import SwiftUI
 import SwiftData
 
 struct DetailsView: View {
-    @Environment(\.databaseService) private var databaseService
     @Environment(SubscriptionsViewModel.self) private var vm
 
     @State private var scale = 0.95
@@ -136,6 +136,8 @@ struct DetailsView: View {
 #Preview {
     @Previewable @Namespace var animation
 
+    Container.shared.preview()
+
     return DetailsView(subscription: Subscription.example, animation: animation)
-        .environment(SubscriptionsViewModel(databaseService: SwiftDataService(container: ModelContainer.preview)))
+        .environment(SubscriptionsViewModel())
 }

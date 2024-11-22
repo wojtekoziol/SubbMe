@@ -35,4 +35,6 @@ class User: Decodable {
         lastName = try container.decode(String.self, forKey: .lastName)
         token = try container.decode(String.self, forKey: .token)
     }
+
+    static let example = User(email: "user@example.com", firstName: "John", lastName: "Doe")
 }

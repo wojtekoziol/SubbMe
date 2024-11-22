@@ -7,16 +7,14 @@
 
 import SwiftUI
 
-class ApiService {
-    let encoder = JSONEncoder()
-    let decoder = JSONDecoder()
+class ApiService: ApiServiceProtocol {
+    private let encoder = JSONEncoder()
+    private let decoder = JSONDecoder()
 
     private var token: String?
-}
 
-// MARK: - Auth
+    // MARK: - Auth
 
-extension ApiService {
     func register(with registerDTO: RegisterDTO) async throws -> User {
         let body = try encoder.encode(registerDTO)
         let data = try await NetworkService.shared.post(token: nil, endpoint: "auth/register", body: body)
@@ -32,18 +30,11 @@ extension ApiService {
         token = user.token
         return user
     }
-}
 
-// MARK: - Environment
+    // MARK: - Subscriptions
 
-struct ApiServiceKey: EnvironmentKey {
-    static var defaultValue = ApiService()
-}
-
-extension EnvironmentValues {
-    @MainActor
-    var apiService: ApiService {
-        get { self[ApiServiceKey.self] }
-        set { self[ApiServiceKey.self] = newValue }
+    func fetchSubscriptions() async throws -> [Subscription] {
+        let data = try await NetworkService.shared.get(token: token, endpoint: "subscription")
+        return try decoder.decode([Subscription].self, from: data)
     }
 }

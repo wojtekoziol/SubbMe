@@ -5,12 +5,15 @@
 //  Created by Wojciech Kozioł on 11/11/2024.
 //
 
+import Factory
 import Foundation
 import SuperValidator
 
 @Observable
 class EditSubscriptionViewModel {
-    let databaseService: DatabaseService
+    @ObservationIgnored
+    @Injected(\.databaseService) private var databaseService
+
     let subscription: Subscription
 
     var name = ""
@@ -25,8 +28,7 @@ class EditSubscriptionViewModel {
     var isNew: Bool
     var showingDeleteAlert = false
 
-    init(databaseService: DatabaseService, subscription: Subscription?) {
-        self.databaseService = databaseService
+    init(subscription: Subscription?) {
         self.subscription = subscription ?? Subscription()
         self.isNew = subscription == nil
 

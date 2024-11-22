@@ -5,6 +5,7 @@
 //  Created by Wojciech Kozioł on 11/11/2024.
 //
 
+import Factory
 import SwiftUI
 import SwiftData
 
@@ -13,8 +14,8 @@ struct EditSubscriptionView: View {
     @Environment(SubscriptionsViewModel.self) private var subscriptionsViewModel
     @State private var vm: EditSubscriptionViewModel
 
-    init(databaseService: DatabaseService, subscription: Subscription?) {
-        self._vm = State(wrappedValue: EditSubscriptionViewModel(databaseService: databaseService, subscription: subscription))
+    init(subscription: Subscription?) {
+        self._vm = State(wrappedValue: EditSubscriptionViewModel(subscription: subscription))
     }
 
     var title: String {
@@ -99,7 +100,7 @@ struct EditSubscriptionView: View {
 }
 
 #Preview {
-    let databaseService = SwiftDataService(container: ModelContainer.preview)
-    return EditSubscriptionView(databaseService: databaseService, subscription: Subscription.example)
-        .environment(SubscriptionsViewModel(databaseService: databaseService))
+    Container.shared.preview()
+    return EditSubscriptionView(subscription: Subscription.example)
+        .environment(SubscriptionsViewModel())
 }

@@ -10,7 +10,7 @@ import SwiftData
 
 @Model
 class Subscription: Identifiable {
-    var id: String
+    var id: UInt64? = nil
     var name: String
     var type: SubscriptionType
     var price: Double
@@ -20,7 +20,6 @@ class Subscription: Identifiable {
     var websiteURL: String?
 
     init(name: String, type: SubscriptionType, price: Double, currencyCode: String, dateStartedAsInterval: Double, dateEndingAsInterval: Double? = nil, websiteURL: String? = nil) {
-        self.id = UUID().uuidString
         self.name = name
         self.type = type
         self.price = price

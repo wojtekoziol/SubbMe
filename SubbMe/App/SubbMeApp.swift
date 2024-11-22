@@ -11,12 +11,14 @@ import SwiftUI
 @main
 struct SubbMeApp: App {
     let databaseService = SwiftDataService()
+    let apiService = ApiService()
 
     var body: some Scene {
         WindowGroup {
-            SubscriptionsView(databaseService: databaseService)
+            AuthWrapperView(databaseService: databaseService, apiService: apiService)
                 .preferredColorScheme(.dark)
         }
         .environment(\.databaseService, databaseService)
+        .environment(\.apiService, apiService)
     }
 }

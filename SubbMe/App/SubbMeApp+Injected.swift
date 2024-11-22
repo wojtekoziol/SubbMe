@@ -10,17 +10,17 @@ import SwiftUI
 
 extension Container {
     var databaseService: Factory<DatabaseService> {
-        Factory(self) {
+        self {
             MainActor.assumeIsolated {
                 SwiftDataService()
             }
         }
+        .cached
     }
 
     var apiService: Factory<ApiServiceProtocol> {
-        Factory(self) {
-            ApiService()
-        }
+        self { ApiService() }
+            .singleton
     }
 
     func preview() {
@@ -32,8 +32,6 @@ extension Container {
         }
 
         // Api Service
-        Container.shared.apiService.register {
-            MockApiService()
-        }
+        Container.shared.apiService.register { MockApiService() }
     }
 }

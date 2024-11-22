@@ -37,4 +37,17 @@ class ApiService: ApiServiceProtocol {
         let data = try await NetworkService.shared.get(token: token, endpoint: "subscription")
         return try decoder.decode([Subscription].self, from: data)
     }
+
+    func createSubscription(_ subscription: Subscription) async throws -> Subscription {
+        let body = try encoder.encode(subscription)
+        let data = try await NetworkService.shared.post(token: token, endpoint: "subscription", body: body)
+        return try decoder.decode(Subscription.self, from: data)
+    }
+
+    func updateSubscription(_ subscription: Subscription) async throws -> Subscription {
+        guard let id = subscription.id else { throw NetworkError.invalidData }
+        let body = try encoder.encode(subscription)
+        let data = try await NetworkService.shared.put(token: token, endpoint: "subscription/\(id)", body: body)
+        return try decoder.decode(Subscription.self, from: data)
+    }
 }

@@ -63,9 +63,11 @@ struct EditSubscriptionView: View {
                     .textInputAutocapitalization(.never)
 
                 Button("Save") {
-                    vm.save()
-                    subscriptionsViewModel.fetchSubscriptions()
-                    dismiss()
+                    Task {
+                        await vm.save()
+                        await subscriptionsViewModel.fetchSubscriptions()
+                        dismiss()
+                    }
                 }
                 .buttonStyle(.borderedProminent)
                 .disabled(!vm.isFormValid)
@@ -90,9 +92,11 @@ struct EditSubscriptionView: View {
                 Button("Cancel", role: .cancel) { }
 
                 Button("Delete", role: .destructive) {
-                    vm.delete()
-                    subscriptionsViewModel.fetchSubscriptions()
-                    dismiss()
+                    Task {
+                        await vm.delete()
+                        await subscriptionsViewModel.fetchSubscriptions()
+                        dismiss()
+                    }
                 }
             }
         }

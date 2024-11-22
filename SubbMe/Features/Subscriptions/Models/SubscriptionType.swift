@@ -7,19 +7,10 @@
 
 import Foundation
 
-enum SubscriptionType: CaseIterable, Codable, CustomStringConvertible, Hashable {
+enum SubscriptionType: String, CaseIterable, Codable, CustomStringConvertible {
     case annually, monthly, weekly, daily
 
-    var description: String  {
-        switch self {
-        case .annually:
-            "Annually"
-        case .monthly:
-            "Monthly"
-        case .weekly:
-            "Weekly"
-        case .daily:
-            "Daily"
-        }
+    var description: String {
+        self.rawValue.capitalizedFirstLetter()
     }
 }

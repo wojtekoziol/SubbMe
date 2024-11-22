@@ -22,6 +22,9 @@ struct ListView: View {
                     }
             }
         }
+        .refreshable {
+            Task { await vm.fetchSubscriptions() }
+        }
     }
 }
 

@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Subscription: Identifiable, Decodable {
+class Subscription: Identifiable, Codable, NSCopying {
     enum CodingKeys: String, CodingKey {
         case id
         case name
@@ -30,7 +30,8 @@ class Subscription: Identifiable, Decodable {
     var dateEndingAsInterval: Double?
     var websiteURL: String?
 
-    init(name: String, type: SubscriptionType, price: Double, currencyCode: String, dateStartedAsInterval: Double, dateEndingAsInterval: Double? = nil, websiteURL: String? = nil) {
+    init(id: UInt64? = nil, name: String, type: SubscriptionType, price: Double, currencyCode: String, dateStartedAsInterval: Double, dateEndingAsInterval: Double? = nil, websiteURL: String? = nil) {
+        self.id = id
         self.name = name
         self.type = type
         self.price = price
@@ -40,11 +41,21 @@ class Subscription: Identifiable, Decodable {
         self.websiteURL = websiteURL
     }
 
+    convenience init() {
+        self.init(name: "", type: .monthly, price: 0, currencyCode: "EUR", dateStartedAsInterval: Date().timeIntervalSince1970)
+    }
+
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decodeIfPresent(UInt64.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
-        type = try container.decode(SubscriptionType.self, forKey: .type)
+
+        let typeString = try container.decode(String.self, forKey: .type)
+        guard let subscriptionType = SubscriptionType(rawValue: typeString.lowercased()) else {
+            throw DecodingError.dataCorruptedError(forKey: .type, in: container, debugDescription: "Invalid subscription type value: \(typeString)")
+        }
+        type = subscriptionType
+
         price = try container.decode(Double.self, forKey: .price)
         currencyCode = try container.decode(String.self, forKey: .currencyCode)
         dateStartedAsInterval = try container.decode(Double.self, forKey: .dateStartedAsInterval)
@@ -52,8 +63,21 @@ class Subscription: Identifiable, Decodable {
         websiteURL = try container.decodeIfPresent(String.self, forKey: .websiteURL)
     }
 
-    convenience init() {
-        self.init(name: "", type: .monthly, price: 0, currencyCode: "EUR", dateStartedAsInterval: Date().timeIntervalSince1970)
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
+        try container.encode(type.rawValue.uppercased(), forKey: .type)
+        try container.encode(price, forKey: .price)
+        try container.encode(currencyCode, forKey: .currencyCode)
+        try container.encode(dateStartedAsInterval, forKey: .dateStartedAsInterval)
+        try container.encode(dateEndingAsInterval, forKey: .dateEndingAsInterval)
+        try container.encode(websiteURL, forKey: .websiteURL)
+    }
+
+    func copy(with zone: NSZone? = nil) -> Any {
+        let copy = Subscription(id: id, name: name, type: type, price: price, currencyCode: currencyCode, dateStartedAsInterval: dateStartedAsInterval, dateEndingAsInterval: dateEndingAsInterval, websiteURL: websiteURL)
+        return copy
     }
 
     var nextBill: Date? {

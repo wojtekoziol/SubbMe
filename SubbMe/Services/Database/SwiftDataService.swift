@@ -55,6 +55,7 @@ class SwiftDataService: DatabaseService {
 
     func updateAllSubscriptions(_ subscriptions: [Subscription]) {
         try? context.delete(model: Subscription.self)
+        try? context.save()
         for subscription in subscriptions {
             context.insert(subscription)
         }

@@ -14,6 +14,9 @@ class EditSubscriptionViewModel {
     @ObservationIgnored
     @Injected(\.databaseService) private var databaseService
 
+    @ObservationIgnored
+    @Injected(\.apiService) private var apiService
+
     let subscription: Subscription
 
     var name = ""
@@ -43,7 +46,39 @@ class EditSubscriptionViewModel {
         self.websiteURL = self.subscription.websiteURL ?? ""
     }
 
-    func save() {
+    func save() async {
+        if isNew {
+            await createSubscription()
+        } else {
+            await updateSubscription()
+        }
+    }
+
+    private func updateSubscription() async {
+        let subBuf = subscription.copy() as! Subscription
+        do {
+            subscription.name = name
+            subscription.type = type
+            subscription.price = Double(price) ?? 0
+            subscription.currencyCode = currencyCode
+            subscription.dateStartedAsInterval = dateStarted.timeIntervalSince1970
+            subscription.dateEndingAsInterval = dateEndingEnabled ? dateEnding.timeIntervalSince1970 : nil
+            subscription.websiteURL = websiteURL
+
+            let _ = try await apiService.updateSubscription(subscription)
+        } catch {
+            print("Error updating subscription: \(error.localizedDescription)")
+            subscription.name = subBuf.name
+            subscription.type = subBuf.type
+            subscription.price = subBuf.price
+            subscription.currencyCode = subBuf.currencyCode
+            subscription.dateStartedAsInterval = subBuf.dateStartedAsInterval
+            subscription.dateEndingAsInterval = subBuf.dateEndingAsInterval
+            subscription.websiteURL = subBuf.websiteURL
+        }
+    }
+
+    private func createSubscription() async {
         subscription.name = name
         subscription.type = type
         subscription.price = Double(price) ?? 0
@@ -52,11 +87,12 @@ class EditSubscriptionViewModel {
         subscription.dateEndingAsInterval = dateEndingEnabled ? dateEnding.timeIntervalSince1970 : nil
         subscription.websiteURL = websiteURL
 
-        Task {
-            if isNew {
-                await databaseService.addSubscription(subscription)
-                self.isNew = false
-            }
+        do {
+            let newSubscription = try await apiService.createSubscription(subscription)
+            await databaseService.addSubscription(newSubscription)
+            self.isNew = false
+        } catch {
+            print("Error creating subscription: \(error.localizedDescription)")
         }
     }
 
@@ -64,12 +100,10 @@ class EditSubscriptionViewModel {
         showingDeleteAlert = true
     }
 
-    func delete() {
+    func delete() async {
         guard showingDeleteAlert else { return }
 
-        Task {
-            await databaseService.deleteSubscription(subscription)
-        }
+        await databaseService.deleteSubscription(subscription)
     }
 
     var isFormValid: Bool {

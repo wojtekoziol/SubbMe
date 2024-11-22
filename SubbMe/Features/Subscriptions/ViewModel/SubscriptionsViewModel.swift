@@ -22,20 +22,20 @@ class SubscriptionsViewModel {
     private(set) var selectedSubscription: Subscription?
 
     init() {
-        fetchSubscriptions()
+        Task {
+            await fetchSubscriptions()
+        }
     }
 
-    func fetchSubscriptions() {
-        Task {
-            do {
-                let subscriptions = try await apiService.fetchSubscriptions()
-                self.subscriptions = subscriptions
-                await databaseService.updateAllSubscriptions(subscriptions)
-            } catch {
-                print("Error fetching subscriptions from api: \(error.localizedDescription)")
-                print("Fetching subscriptions locally")
-                self.subscriptions = await databaseService.fetchSubscriptions(sort: [SortDescriptor<Subscription>(\.dateStartedAsInterval)])
-            }
+    func fetchSubscriptions() async {
+        do {
+            let subscriptions = try await apiService.fetchSubscriptions()
+            self.subscriptions = subscriptions
+            await databaseService.updateAllSubscriptions(subscriptions)
+        } catch {
+            print("Error fetching subscriptions from api: \(error.localizedDescription)")
+            print("Fetching subscriptions locally")
+            self.subscriptions = await databaseService.fetchSubscriptions(sort: [SortDescriptor<Subscription>(\.dateStartedAsInterval)])
         }
     }
 

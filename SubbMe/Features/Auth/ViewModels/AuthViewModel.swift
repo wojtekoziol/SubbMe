@@ -22,6 +22,12 @@ class AuthViewModel {
     var firstName = ""
     var lastName = ""
 
+    private(set) var isAutoLogin = false
+
+    init() {
+        Task { await autoLogin() }
+    }
+
     func login() async {
         let loginDTO = LoginDTO(email: email, password: password)
         guard loginDTO.validate() else { return }
@@ -29,6 +35,7 @@ class AuthViewModel {
         do {
             let loggedUser = try await apiService.login(with: loginDTO)
             self.user = loggedUser
+            Keychain.shared.saveCredentials(email: email, password: password)
             await databaseService.updateUser(loggedUser)
         } catch {
             print("Login error: \(error.localizedDescription)")
@@ -42,9 +49,23 @@ class AuthViewModel {
         do {
             let registeredUser = try await apiService.register(with: registerDTO)
             self.user = registeredUser
+            Keychain.shared.saveCredentials(email: email, password: password)
             await databaseService.updateUser(registeredUser)
         } catch {
             print("Register error: \(error.localizedDescription)")
         }
+    }
+
+    private func autoLogin() async {
+        isAutoLogin = true
+        
+        guard let (email, password) = Keychain.shared.getCredentials() else { return }
+        self.email = email
+        self.password = password
+        await login()
+        self.email = ""
+        self.password = ""
+
+        isAutoLogin = false
     }
 }

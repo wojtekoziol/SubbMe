@@ -9,15 +9,29 @@
 /* Begin PBXBuildFile section */
 		9F40ECDD2CE6130600CA596A /* SuperValidator in Frameworks */ = {isa = PBXBuildFile; productRef = 9F40ECDC2CE6130600CA596A /* SuperValidator */; };
 		9F998EC32CF0AC0000DFFB7C /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 9F998EC22CF0AC0000DFFB7C /* Factory */; };
+		9F998F8C2CF1F95500DFFB7C /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9F998F8B2CF1F95500DFFB7C /* KeychainSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9FE7226E2CDCF86800EF907C /* SubbMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SubbMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		9F9990002CF2073500DFFB7C /* Exceptions for "SubbMe" folder in "SubbMe" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 9FE7226D2CDCF86800EF907C /* SubbMe */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		9FE722702CDCF86800EF907C /* SubbMe */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9F9990002CF2073500DFFB7C /* Exceptions for "SubbMe" folder in "SubbMe" target */,
+			);
 			path = SubbMe;
 			sourceTree = "<group>";
 		};
@@ -28,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F998F8C2CF1F95500DFFB7C /* KeychainSwift in Frameworks */,
 				9F40ECDD2CE6130600CA596A /* SuperValidator in Frameworks */,
 				9F998EC32CF0AC0000DFFB7C /* Factory in Frameworks */,
 			);
@@ -74,6 +89,7 @@
 			packageProductDependencies = (
 				9F40ECDC2CE6130600CA596A /* SuperValidator */,
 				9F998EC22CF0AC0000DFFB7C /* Factory */,
+				9F998F8B2CF1F95500DFFB7C /* KeychainSwift */,
 			);
 			productName = SubbMe;
 			productReference = 9FE7226E2CDCF86800EF907C /* SubbMe.app */;
@@ -106,6 +122,7 @@
 			packageReferences = (
 				9F40ECDB2CE6130600CA596A /* XCRemoteSwiftPackageReference "ios-supervalidator" */,
 				9F998EC12CF0AC0000DFFB7C /* XCRemoteSwiftPackageReference "Factory" */,
+				9F998F8A2CF1F95500DFFB7C /* XCRemoteSwiftPackageReference "keychain-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9FE7226F2CDCF86800EF907C /* Products */;
@@ -268,9 +285,9 @@
 				DEVELOPMENT_TEAM = 42K3XR96WP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SubbMe/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -297,9 +314,9 @@
 				DEVELOPMENT_TEAM = 42K3XR96WP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SubbMe/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -355,6 +372,14 @@
 				minimumVersion = 2.4.1;
 			};
 		};
+		9F998F8A2CF1F95500DFFB7C /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 24.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -367,6 +392,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9F998EC12CF0AC0000DFFB7C /* XCRemoteSwiftPackageReference "Factory" */;
 			productName = Factory;
+		};
+		9F998F8B2CF1F95500DFFB7C /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9F998F8A2CF1F95500DFFB7C /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

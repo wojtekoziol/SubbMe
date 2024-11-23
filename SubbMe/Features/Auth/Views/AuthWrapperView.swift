@@ -13,11 +13,13 @@ struct AuthWrapperView: View {
     @State private var vm = AuthViewModel()
 
     var body: some View {
-        if vm.user != nil {
-            SubscriptionsView()
-        } else {
+        if vm.isAutoLogin {
+            SplashScreen()
+        } else if vm.user == nil {
             LoginView()
                 .environment(vm)
+        } else {
+            SubscriptionsView()
         }
     }
 }

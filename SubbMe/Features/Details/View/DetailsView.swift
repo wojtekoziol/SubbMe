@@ -50,7 +50,7 @@ struct DetailsView: View {
                         DetailRow("Period") {
                             HStack {
                                 Circle()
-                                    .fill(subscription.isActive ? .green : .red)
+                                    .fill(subscription.isActive ? .darkGreen : .red)
                                     .frame(width: 7.5)
 
                                 Text(String(describing: subscription.type))

@@ -133,6 +133,6 @@ class Subscription: Identifiable, Codable, NSCopying {
     }
 
     static var example: Subscription {
-        Subscription(name: "Spotify", type: .monthly, price: 20, currencyCode: "EUR", dateStartedAsInterval: Date().timeIntervalSince1970, websiteURL: "google.com")
+        Subscription(name: "Spotify", type: .monthly, price: 20, currencyCode: "EUR", dateStartedAsInterval: Date.now.timeIntervalSince1970, websiteURL: "google.com")
     }
 }

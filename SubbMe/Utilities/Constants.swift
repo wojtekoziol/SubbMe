@@ -8,7 +8,9 @@
 import Foundation
 
 class Constants {
+    private init() { }
+
     static let availableCurrencies = ["USD", "EUR", "GBP", "PLN"]
 
-    private init() { }
+    static let animationDuration: Double = 0.35
 }

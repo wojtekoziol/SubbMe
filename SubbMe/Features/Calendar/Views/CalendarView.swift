@@ -39,12 +39,40 @@ struct CalendarView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Button {
-                selectedDate = .now
-            } label: {
-                Text(monthTitle)
-                    .font(.title)
-                    .bold()
+            HStack {
+                Button {
+                    selectedDate = .now
+                } label: {
+                    Text(monthTitle)
+                        .font(.title)
+                        .bold()
+                }
+
+                Spacer()
+
+                HStack(spacing: 20) {
+                    Button {
+                        guard !animationRunning else { return }
+
+                        withAnimation(.spring(duration: Constants.animationDuration)) {
+                            animationRunning = true
+                            offset += 1
+                        }
+                    } label: {
+                        Image(systemName: "chevron.left")
+                    }
+
+                    Button {
+                        guard !animationRunning else { return }
+
+                        withAnimation(.spring(duration: Constants.animationDuration)) {
+                            animationRunning = true
+                            offset -= 1
+                        }
+                    } label: {
+                        Image(systemName: "chevron.right")
+                    }
+                }
             }
             .buttonStyle(.plain)
 
@@ -78,7 +106,6 @@ struct CalendarView: View {
                         if value.translation.width < 0 { offset -= 1 }
                         if value.translation.width > 0 { offset += 1 }
                     }
-
                 }
             )
 

@@ -16,6 +16,8 @@ struct CalendarView: View {
     @State private var color = Color.blue
     @State private var selectedDate = Date.now
 
+    @State private var overlayPresented = false
+
     @State private var offset = 0
     @State private var animationRunning = false
 
@@ -133,6 +135,7 @@ struct CalendarView: View {
 }
 
 #Preview {
+    @Previewable @Namespace var animation
     Container.shared.preview()
     return CalendarView()
         .environment(SubscriptionsViewModel())

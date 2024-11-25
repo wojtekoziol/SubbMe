@@ -21,6 +21,10 @@ class SubscriptionsViewModel {
     private(set) var showingDetailsScreen = false
     private(set) var selectedSubscription: Subscription?
 
+    private(set) var showingDayDetails = false
+    private(set) var selectedDate = Date.now
+    private(set) var detailsSubscriptions = [Subscription]()
+
     init() {
         Task {
             await fetchSubscriptions()
@@ -51,5 +55,17 @@ class SubscriptionsViewModel {
 
     func hideDetails() {
         showingDetailsScreen = false
+    }
+
+    func showDetails(for date: Date) {
+        selectedDate = date
+        detailsSubscriptions = subscriptions.forDay(date)
+        if detailsSubscriptions.count > 0 {
+            showingDayDetails = true
+        }
+    }
+
+    func hideDayDetails() {
+        showingDayDetails = false
     }
 }

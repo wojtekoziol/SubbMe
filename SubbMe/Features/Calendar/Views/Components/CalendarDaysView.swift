@@ -26,6 +26,9 @@ struct CalendarDaysView: View {
                             date: day,
                             subscriptions: subscriptionsVM.subscriptions.forDay(day)
                         )
+                        .onTapGesture {
+                            subscriptionsVM.showDetails(for: day)
+                        }
                     } else {
                         Text("")
                     }
@@ -42,6 +45,7 @@ struct CalendarDaysView: View {
 }
 
 #Preview {
+    @Previewable @Namespace var animation
     Container.shared.preview()
     return CalendarDaysView(selectedDate: .now)
         .environment(SubscriptionsViewModel())

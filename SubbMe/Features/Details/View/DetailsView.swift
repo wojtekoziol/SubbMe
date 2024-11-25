@@ -27,8 +27,11 @@ struct DetailsView: View {
         VStack {
             ZStack(alignment: .topTrailing) {
                 VStack(spacing: 40) {
-                    Circle()
-                        .frame(width: 80)
+                    Image(systemName: "creditcard")
+                        .font(.largeTitle)
+                        .padding(25)
+                        .background(.regularMaterial)
+                        .clipShape(.circle)
 
                     VStack {
                         HStack {
@@ -63,6 +66,14 @@ struct DetailsView: View {
 
                         DetailRow("Date Ending") {
                             Text(subscription.dateEnding.formattedString())
+                        }
+
+                        DetailRow("Remind me") {
+                            if let reminderDays = subscription.reminderDays {
+                                Text("^[\(reminderDays) day](inflect: true) before")
+                            } else {
+                                Text("-")
+                            }
                         }
 
                         DetailRow("Website") {

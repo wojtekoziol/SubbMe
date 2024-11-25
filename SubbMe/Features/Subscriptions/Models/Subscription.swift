@@ -19,6 +19,7 @@ class Subscription: Identifiable, Codable, NSCopying {
         case dateStartedAsInterval
         case dateEndingAsInterval
         case websiteURL
+        case reminderDays
     }
 
     var id: UInt64? = nil
@@ -29,8 +30,9 @@ class Subscription: Identifiable, Codable, NSCopying {
     var dateStartedAsInterval: Double
     var dateEndingAsInterval: Double?
     var websiteURL: String?
+    var reminderDays: Int?
 
-    init(id: UInt64? = nil, name: String, type: SubscriptionType, price: Double, currencyCode: String, dateStartedAsInterval: Double, dateEndingAsInterval: Double? = nil, websiteURL: String? = nil) {
+    init(id: UInt64? = nil, name: String, type: SubscriptionType, price: Double, currencyCode: String, dateStartedAsInterval: Double, dateEndingAsInterval: Double? = nil, websiteURL: String? = nil, reminderDays: Int? = nil) {
         self.id = id
         self.name = name
         self.type = type
@@ -39,6 +41,7 @@ class Subscription: Identifiable, Codable, NSCopying {
         self.dateStartedAsInterval = dateStartedAsInterval
         self.dateEndingAsInterval = dateEndingAsInterval
         self.websiteURL = websiteURL
+        self.reminderDays = reminderDays
     }
 
     convenience init() {
@@ -61,6 +64,7 @@ class Subscription: Identifiable, Codable, NSCopying {
         dateStartedAsInterval = try container.decode(Double.self, forKey: .dateStartedAsInterval)
         dateEndingAsInterval = try container.decodeIfPresent(Double.self, forKey: .dateEndingAsInterval)
         websiteURL = try container.decodeIfPresent(String.self, forKey: .websiteURL)
+        reminderDays = try container.decodeIfPresent(Int.self, forKey: .reminderDays)
     }
 
     func encode(to encoder: any Encoder) throws {
@@ -73,10 +77,11 @@ class Subscription: Identifiable, Codable, NSCopying {
         try container.encode(dateStartedAsInterval, forKey: .dateStartedAsInterval)
         try container.encode(dateEndingAsInterval, forKey: .dateEndingAsInterval)
         try container.encode(websiteURL, forKey: .websiteURL)
+        try container.encode(reminderDays, forKey: .reminderDays)
     }
 
     func copy(with zone: NSZone? = nil) -> Any {
-        let copy = Subscription(id: id, name: name, type: type, price: price, currencyCode: currencyCode, dateStartedAsInterval: dateStartedAsInterval, dateEndingAsInterval: dateEndingAsInterval, websiteURL: websiteURL)
+        let copy = Subscription(id: id, name: name, type: type, price: price, currencyCode: currencyCode, dateStartedAsInterval: dateStartedAsInterval, dateEndingAsInterval: dateEndingAsInterval, websiteURL: websiteURL, reminderDays: reminderDays)
         return copy
     }
 
@@ -112,6 +117,11 @@ class Subscription: Identifiable, Codable, NSCopying {
         return nextDate
     }
 
+    var reminderDate: Date? {
+        guard let date = nextBill ?? dateEnding, let reminderDays else { return nil }
+        return Calendar.current.date(byAdding: .day, value: -reminderDays, to: date)
+    }
+
     var isActive: Bool {
         if let dateEndingAsInterval {
             let dateEnding = Date(timeIntervalSince1970: dateEndingAsInterval)
@@ -133,6 +143,6 @@ class Subscription: Identifiable, Codable, NSCopying {
     }
 
     static var example: Subscription {
-        Subscription(name: "Spotify", type: .monthly, price: 20, currencyCode: "EUR", dateStartedAsInterval: Date.now.timeIntervalSince1970, websiteURL: "google.com")
+        Subscription(name: "Spotify", type: .monthly, price: 20, currencyCode: "EUR", dateStartedAsInterval: Date.now.timeIntervalSince1970, websiteURL: "google.com", reminderDays: 2)
     }
 }

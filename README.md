@@ -6,10 +6,10 @@ SwiftUI mobile app for tracking online subscriptions.
 - Custom API with database and authentication for online use - [Backend Repo](https://github.com/wojtekoziol/SubbMeBackend)
 - Auto login with Apple Keychain
 - Custom calendar
+- "Remind me" notifications
 - Seamless animations
 
 ## TODO
-- "Remind me" notifications
 - Home screen widgets
 - Unit tests
 

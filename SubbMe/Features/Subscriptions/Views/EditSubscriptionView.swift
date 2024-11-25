@@ -57,28 +57,43 @@ struct EditSubscriptionView: View {
                     }
                 }
 
-                TextField("Website URL", text: $vm.websiteURL)
-                    .keyboardType(.URL)
-                    .autocorrectionDisabled()
-                    .textInputAutocapitalization(.never)
+                Section {
+                    Toggle(isOn: $vm.reminderEnabled) {
+                        Text("Remind me")
+                    }
 
-                Button("Save") {
-                    Task {
-                        await vm.save()
-                        await subscriptionsViewModel.fetchSubscriptions()
-                        dismiss()
+                    if vm.reminderEnabled {
+                        Stepper("^[\(vm.reminderDays) day](inflect: true) before", value: $vm.reminderDays, in: 1...14)
                     }
                 }
-                .buttonStyle(.borderedProminent)
-                .disabled(!vm.isFormValid)
 
-                if !vm.isNew {
-                    Button("Delete", role: .destructive) {
-                        vm.showDeleteAlert()
+                Section {
+                    TextField("Website URL", text: $vm.websiteURL)
+                        .keyboardType(.URL)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                }
+
+                Section {
+                    Button("Save") {
+                        Task {
+                            await vm.save()
+                            await subscriptionsViewModel.fetchSubscriptions()
+                            dismiss()
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(!vm.isFormValid)
+
+                    if !vm.isNew {
+                        Button("Delete", role: .destructive) {
+                            vm.showDeleteAlert()
+                        }
                     }
                 }
             }
             .animation(.default, value: vm.dateEndingEnabled)
+            .animation(.default, value: vm.reminderEnabled)
             .navigationTitle(title.localizedCapitalized)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

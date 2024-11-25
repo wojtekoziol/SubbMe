@@ -24,9 +24,12 @@ class EditSubscriptionViewModel {
     var price = ""
     var currencyCode = "EUR"
     var dateStarted = Date()
-    var dateEndingEnabled = false
     var dateEnding = Date()
     var websiteURL = ""
+
+    var dateEndingEnabled = false
+    var reminderEnabled = false
+    var reminderDays = 1
 
     var isNew: Bool
     var showingDeleteAlert = false
@@ -41,9 +44,11 @@ class EditSubscriptionViewModel {
         self.price = "\(self.subscription.price)"
         self.currencyCode = self.subscription.currencyCode
         self.dateStarted = self.subscription.dateStarted
-        self.dateEndingEnabled = self.subscription.dateEnding != nil
         self.dateEnding = self.subscription.dateEnding ?? Date()
         self.websiteURL = self.subscription.websiteURL ?? ""
+        self.dateEndingEnabled = self.subscription.dateEnding != nil
+        self.reminderEnabled = self.subscription.reminderDays != nil
+        self.reminderDays = self.subscription.reminderDays ?? 1
     }
 
     func save() async {
@@ -64,6 +69,7 @@ class EditSubscriptionViewModel {
             subscription.dateStartedAsInterval = dateStarted.timeIntervalSince1970
             subscription.dateEndingAsInterval = dateEndingEnabled ? dateEnding.timeIntervalSince1970 : nil
             subscription.websiteURL = websiteURL
+            subscription.reminderDays = reminderEnabled ? reminderDays : nil
 
             let _ = try await apiService.updateSubscription(subscription)
         } catch {
@@ -75,6 +81,7 @@ class EditSubscriptionViewModel {
             subscription.dateStartedAsInterval = subBuf.dateStartedAsInterval
             subscription.dateEndingAsInterval = subBuf.dateEndingAsInterval
             subscription.websiteURL = subBuf.websiteURL
+            subscription.reminderDays = subBuf.reminderDays
         }
     }
 
@@ -86,6 +93,7 @@ class EditSubscriptionViewModel {
         subscription.dateStartedAsInterval = dateStarted.timeIntervalSince1970
         subscription.dateEndingAsInterval = dateEndingEnabled ? dateEnding.timeIntervalSince1970 : nil
         subscription.websiteURL = websiteURL
+        subscription.reminderDays = reminderEnabled ? reminderDays : nil
 
         do {
             let newSubscription = try await apiService.createSubscription(subscription)

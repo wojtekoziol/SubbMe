@@ -41,6 +41,8 @@ class SubscriptionsViewModel {
             print("Fetching subscriptions locally")
             self.subscriptions = await databaseService.fetchSubscriptions(sort: [SortDescriptor<Subscription>(\.dateStartedAsInterval)])
         }
+
+        await NotificationService.shared.scheduleAll(self.subscriptions)
     }
 
     func showEditScreen(for subscription: Subscription? = nil) {

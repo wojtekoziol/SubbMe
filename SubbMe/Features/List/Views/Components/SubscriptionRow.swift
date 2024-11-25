@@ -12,8 +12,7 @@ struct SubscriptionRow: View {
 
     var body: some View {
         HStack(spacing: 20) {
-            RoundedRectangle(cornerRadius: 10)
-                .frame(width: 30, height: 30)
+            Image(systemName: "creditcard")
 
             VStack(alignment: .leading) {
                 Text(subscription.name)

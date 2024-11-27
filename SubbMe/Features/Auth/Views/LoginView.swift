@@ -15,31 +15,38 @@ struct LoginView: View {
     var body: some View {
         @Bindable var authVM = authVM
 
-        VStack {
-            TextField("Email", text: $authVM.email)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-                .keyboardType(.emailAddress)
+        VStack(spacing: 50) {
+            VStack {
+                TextField("Email", text: $authVM.email)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .keyboardType(.emailAddress)
 
-            SecureField("Password", text: $authVM.password)
+                SecureField("Password", text: $authVM.password)
 
-            TextField("First Name", text: $authVM.firstName)
+                TextField("First Name", text: $authVM.firstName)
 
-            TextField("Last Name", text: $authVM.lastName)
-                .autocorrectionDisabled()
+                TextField("Last Name", text: $authVM.lastName)
+                    .autocorrectionDisabled()
+            }
+            .textFieldStyle(.roundedBorder)
 
-            Button("Login") {
-                Task {
-                    await authVM.login()
+            HStack {
+                Button("Register") {
+                    Task {
+                        await authVM.register()
+                    }
+                }
+
+                Button("Login") {
+                    Task {
+                        await authVM.login()
+                    }
                 }
             }
-
-            Button("Register") {
-                Task {
-                    await authVM.register()
-                }
-            }
+            .buttonStyle(.borderedProminent)
         }
+        .padding()
     }
 }
 

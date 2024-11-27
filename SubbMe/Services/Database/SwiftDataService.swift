@@ -17,8 +17,32 @@ class SwiftDataService: DatabaseService {
     }
 
     init() {
-        let config = ModelConfiguration()
-        container = try! ModelContainer(for: Subscription.self, configurations: config)
+//        do {
+//            guard let bundleURL = Bundle.main.url(forResource: "default", withExtension: "store") else {
+//                fatalError("Failed to find default.store in app bundle")
+//            }
+//
+//            let fileManager = FileManager.default
+//            let documentDirectoryURL = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+//            let documentURL = documentDirectoryURL.appendingPathComponent("default.store")
+//
+//            // Only copy the store from the bundle to the Documents directory if it doesn't exist
+//            if !fileManager.fileExists(atPath: documentURL.path) {
+//                try fileManager.copyItem(at: bundleURL, to: documentURL)
+//            }
+//
+//            let configuration = ModelConfiguration(url: documentURL)
+//            container = try ModelContainer(for: Subscription.self, configurations: configuration)
+//        } catch {
+//            fatalError("Could not create SwiftDataService: \(error.localizedDescription)")
+//        }
+        let storeURL = URL.documentsDirectory.appending(path: "database.sqlite")
+        let config = ModelConfiguration(url: storeURL)
+        do {
+            container = try ModelContainer(for: Subscription.self, configurations: config)
+        } catch {
+            fatalError("Could not create SwiftDataService: \(error.localizedDescription)")
+        }
     }
 
     // MARK: - User

@@ -7,10 +7,10 @@ SwiftUI mobile app for tracking online subscriptions.
 - Auto login with Apple Keychain
 - Custom calendar
 - "Remind me" notifications
+- Home screen widgets
 - Seamless animations
 
 ## TODO
-- Home screen widgets
 - Unit tests
 
 # Credits

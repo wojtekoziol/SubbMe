@@ -1,6 +1,9 @@
 # About
 SwiftUI mobile app for tracking online subscriptions.
 
+# Preview
+![App Preview](https://github.com/wojtekoziol/SubbMe/blob/main/AppPreview.png?raw=true)
+
 # Features
 - Local database for offline use
 - Custom API with database and authentication for online use - [Backend Repo](https://github.com/wojtekoziol/SubbMeBackend)

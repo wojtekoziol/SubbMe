@@ -29,7 +29,7 @@ struct SubscriptionRow: View {
 
             Spacer()
 
-            Text("$6.10")
+            Text(subscription.price.asPrice(currencyCode: subscription.currencyCode))
                 .foregroundStyle(.secondary)
                 .bold()
         }

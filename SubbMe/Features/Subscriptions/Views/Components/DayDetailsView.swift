@@ -15,25 +15,27 @@ struct DayDetailsView: View {
 
     var body: some View {
         VStack {
-            ForEach(subscriptionsVM.detailsSubscriptions) { subscription in
-                Button {
-                    subscriptionsVM.showDetails(for: subscription)
-                } label: {
-                    HStack {
-                        Image(systemName: "creditcard")
-                        Text(subscription.name)
-
-                        Spacer()
-
-                        Text(subscription.price.asPrice(currencyCode: subscription.currencyCode))
-                            .foregroundStyle(.secondary)
+            VStack {
+                ForEach(subscriptionsVM.detailsSubscriptions) { subscription in
+                    Button {
+                        subscriptionsVM.showDetails(for: subscription)
+                    } label: {
+                        HStack {
+                            Image(systemName: "creditcard")
+                            Text(subscription.name)
+                            
+                            Spacer()
+                            
+                            Text(subscription.price.asPrice(currencyCode: subscription.currencyCode))
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding()
+                        .fontWeight(.semibold)
+                        .background(.ultraThickMaterial)
+                        .clipShape(.capsule)
                     }
-                    .padding()
-                    .fontWeight(.semibold)
-                    .background(.ultraThickMaterial)
-                    .clipShape(.capsule)
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
             }
             .padding(.vertical, 20)
 

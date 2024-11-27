@@ -43,6 +43,7 @@ class SubscriptionsViewModel {
         }
 
         await NotificationService.shared.scheduleAll(self.subscriptions)
+        await databaseService.saveWidgetSubscriptions(self.subscriptions)
     }
 
     func showEditScreen(for subscription: Subscription? = nil) {

@@ -14,6 +14,10 @@ extension Date {
         formatter.timeStyle = .none
         return formatter.string(from: self)
     }
+
+    func asKey() -> String {
+        self.formatted(.dateTime.day().month().year())
+    }
 }
 
 extension Date? {

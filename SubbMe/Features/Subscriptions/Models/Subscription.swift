@@ -86,7 +86,10 @@ class Subscription: Identifiable, Codable, NSCopying {
     }
 
     var nextBill: Date? {
-        if Date() < dateStarted {
+        let now = Calendar.current.startOfDay(for: Date())
+        let dateStarted = Calendar.current.startOfDay(for: dateStarted)
+
+        if now < dateStarted {
             return dateStarted
         }
 
@@ -103,22 +106,26 @@ class Subscription: Identifiable, Codable, NSCopying {
         }
 
         var nextDate = dateStarted
-        while nextDate <= Date() {
+        while nextDate < now {
             guard let updatedDate = Calendar.current.date(byAdding: component, value: 1, to: nextDate) else {
                 return nil
             }
             nextDate = updatedDate
         }
 
-        if let endDate = dateEnding, nextDate > endDate {
+        if let dateEnding, nextDate > Calendar.current.startOfDay(for: dateEnding) {
             return nil
         }
 
         return nextDate
     }
 
+    var nextDate: Date? {
+        nextBill ?? dateEnding
+    }
+
     var reminderDate: Date? {
-        guard let date = nextBill ?? dateEnding, let reminderDays else { return nil }
+        guard let date = nextDate, let reminderDays else { return nil }
         return Calendar.current.date(byAdding: .day, value: -reminderDays, to: date)
     }
 
@@ -143,6 +150,6 @@ class Subscription: Identifiable, Codable, NSCopying {
     }
 
     static var example: Subscription {
-        Subscription(name: "Spotify", type: .monthly, price: 20, currencyCode: "EUR", dateStartedAsInterval: Date.now.timeIntervalSince1970, websiteURL: "google.com", reminderDays: 2)
+        Subscription(name: "SubbMe", type: .monthly, price: 20, currencyCode: "EUR", dateStartedAsInterval: Date.now.timeIntervalSince1970, websiteURL: "google.com", reminderDays: 2)
     }
 }
